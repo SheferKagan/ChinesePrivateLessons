@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="title"> Chinese for Beginners - Master the Basics Fast</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6; color: #333; overflow-x: hidden;
+      transition: direction .2s ease, text-align .2s ease;
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+    /* Message Banners */
+    .message-banner {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+      padding: 15px; text-align: center; font-weight: 600;
+      transform: translateY(-120%); transition: transform 0.28s ease;
+      pointer-events: none;
+    }
+    .message-banner.show { transform: translateY(0); pointer-events: auto; }
+    .message-banner.success { background: #4CAF50; color: white; }
+    .message-banner.error { background: #f44336; color: white; }
+
+    /* Honeypot (off-screen) */
+    .honeypot {
+      position: absolute !important;
+      left: -9999px !important;
+      top: auto !important;
+      width: 1px !important;
+      height: 1px !important;
+      overflow: hidden !important;
+    }
+
+    /* Language Toggle */
+    .lang-toggle {
+      position: fixed; top: 16px; right: 16px; z-index: 1000;
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.85); backdrop-filter: blur(6px);
+      border: 1px solid #eee; padding: 10px 14px; border-radius: 999px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    }
+    .lang-toggle button {
+      border: none; background: #D32F2F; color: #fff; font-weight: 700;
+      padding: 8px 14px; border-radius: 999px; cursor: pointer;
+      box-shadow: 0 6px 18px rgba(211,47,47,.35); transition: all .25s ease;
+    }
+    .lang-toggle button:hover { transform: translateY(-2px); background: #B71C1C; }
+    .lang-toggle .current { background: #FFD700; color: #111; box-shadow: 0 6px 18px rgba(255,215,0,.35); }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      background: linear-gradient(135deg, rgba(211, 47, 47, 0.8), rgba(255, 215, 0, 0.6)),
+                  url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1200 600%22><rect fill=%22%23f5f5f5%22 width=%221200%22 height=%22600%22/><circle fill=%22%23ffebee%22 cx=%22200%22 cy=%22150%22 r=%2280%22 opacity=%220.3%22/><circle fill=%22%23fff3e0%22 cx=%22900%22 cy=%22200%22 r=%22120%22 opacity=%220.2%22/><circle fill=%22%23ffebee%22 cx=%22600%22 cy=%22400%22 r=%22100%22 opacity=%220.3%22/><path fill=%22%23d32f2f%22 opacity=%220.1%22 d=%22M100,500 Q300,300 500,500 T900,500 L900,600 L100,600 Z%22/></svg>');
+      background-size: cover; background-position: center;
+      display: flex; align-items: center; position: relative;
+      color: white; text-align: center;
+    }
+    .hero-content { position: relative; z-index: 2; animation: fadeInUp 1s ease-out; }
+    .hero h1 {
+      font-size: clamp(2.2rem, 6vw, 4.5rem); font-weight: 800; margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3); letter-spacing: -0.02em;
+    }
+    .hero-subtitle {
+      font-size: clamp(1.1rem, 3vw, 1.8rem); margin-bottom: 2.2rem; font-weight: 300;
+      opacity: 0.95; text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+    .cta-button {
+      display: inline-block; background: #D32F2F; color: white;
+      padding: 18px 40px; font-size: 1.2rem; font-weight: 700; text-decoration: none;
+      border-radius: 50px; box-shadow: 0 8px 25px rgba(211, 47, 47, 0.4);
+      transition: all 0.3s ease; cursor: pointer; border: none; position: relative; overflow: hidden;
+    }
+    .cta-button:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(211, 47, 47, 0.6); background: #B71C1C; }
+    .cta-button::before {
+      content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,215,0,0.35), transparent); transition: left 0.5s ease;
+    }
+    .cta-button:hover::before { left: 100%; }
+
+/* Picture Section */
+.picture-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.picture-frame {
+  position: relative;
+  display: inline-block;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  border: 5px solid #D4AF37; /* Accent gold color from your palette */
+  transition: all 0.3s ease;
+}
+
+.picture-frame:hover {
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.15);
+  transform: scale(1.05);
+}
+
+.picture {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+.picture:hover {
+  transform: scale(1.02);
+}
+
+    /* Why Section */
+    .why-course { padding: 100px 0; background: #F5F5F5; }
+    .section-title { text-align: center; font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; margin-bottom: 60px; color: #333; }
+    .benefits-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px; margin-top: 60px; }
+    .benefit-card {
+      background: white; padding: 40px 30px; border-radius: 20px; text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer;
+    }
+    .benefit-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+    .benefit-icon { width: 80px; height: 80px; margin: 0 auto 25px; background: linear-gradient(135deg, #D32F2F, #FFD700);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; }
+    .benefit-card h3 { font-size: 1.35rem; font-weight: 700; margin-bottom: 12px; color: #333; }
+    .benefit-card p { color: #666; font-size: 1rem; line-height: 1.6; }
+
+    /* Details */
+    .course-details { padding: 100px 0; background: white; }
+    .details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; margin-top: 60px; }
+    .detail-item { display: flex; align-items: center; padding: 30px; background: #F5F5F5; border-radius: 15px; transition: all 0.3s ease; }
+    .detail-item:hover { background: #FFD700; transform: scale(1.02); }
+    .detail-icon { font-size: 3rem; margin-inline-end: 25px; color: #D32F2F; }
+    .detail-content h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 6px; color: #333; }
+    .detail-content p { color: #666; font-size: 1rem; }
+
+    /* Learn */
+    .what-learn { padding: 100px 0; background: linear-gradient(135deg, #FFD700, #FFA000); color: #333; }
+    .what-learn .section-title { color: #333; }
+    .checklist { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 60px; }
+    .checklist-item {
+      display: flex; align-items: center; background: rgba(255,255,255,0.9); padding: 25px;
+      border-radius: 15px; font-size: 1.05rem; font-weight: 500; box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+    .checklist-item:hover { transform: translateX(10px); }
+    .check-icon { color: #4CAF50; font-size: 1.5rem; margin-inline-end: 15px; font-weight: bold; }
+
+    /* Urgency */
+    .urgency { background: #D32F2F; color: #FFD700; padding: 60px 0; text-align: center; }
+    .urgency h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; animation: pulse 2s infinite; }
+
+    /* Signup */
+    .signup { padding: 100px 0; background: #F5F5F5; }
+    .form-container { max-width: 600px; margin: 0 auto; background: white; padding: 50px; border-radius: 20px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
+    .form-group { margin-bottom: 25px; }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #333; }
+    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 15px 20px; border: 2px solid #E0E0E0; border-radius: 10px; font-size: 1rem; transition: border-color 0.3s ease; }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { outline: none; border-color: #D32F2F; box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1); }
+    .submit-button { width: 100%; background: #D32F2F; color: white; padding: 18px; border: none; border-radius: 10px; font-size: 1.2rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; margin-top: 20px; }
+    .submit-button:hover { background: #B71C1C; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(211, 47, 47, 0.4); }
+    .trust-note { text-align: center; font-size: 0.9rem; color: #666; margin-top: 20px; }
+
+    /* Footer */
+    .footer { background: #333; color: white; padding: 50px 0; text-align: center; }
+    .footer p { margin-bottom: 10px; }
+
+    /* Animations */
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero { min-height: 80vh; padding: 40px 0; }
+      .benefits-grid, .details-grid, .checklist { grid-template-columns: 1fr; }
+      .form-container { margin: 0 20px; padding: 30px; }
+      .detail-item { flex-direction: column; text-align: center; }
+      .detail-icon { margin-inline-end: 0; margin-bottom: 15px; }
+      .lang-toggle { left: 50%; right: auto; transform: translateX(-50%); }
+    }
+    html { scroll-behavior: smooth; }
+  </style>
+</head>
+<body>
+  <!-- Message Banner (shows success/error) -->
+  <div id="messageBanner" class="message-banner" role="status" aria-live="polite"></div>
+
+  <!-- Language Toggle -->
+  <div class="lang-toggle" aria-label="Language selector">
+    <span data-i18n="lang">Language:</span>
+    <button id="btn-en" class="current" type="button">EN</button>
+    <button id="btn-he" type="button">HE</button>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 data-i18n="hero_h1"> Chinese for Beginners</h1>
+        <p class="hero-subtitle" data-i18n="hero_sub">No experience needed · Just curiosity and drive!</p>
+        <button class="cta-button" onclick="scrollToSignup()" aria-label="Reserve your spot" data-i18n="cta">
+          Reserve My Spot
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Picture Section -->
+    <section class="picture-section">
+    <div class="picture-frame">
+        <img src="learnCHINA.jpg" alt="Course Image" class="picture" />
+    </div>
+    </section>
+
+
+  <!-- Why This Course Section -->
+  <section class="why-course" id="why-course">
+    <div class="container">
+      <h2 class="section-title" data-i18n="why_title">Why This Course?</h2>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <div class="benefit-icon">💼</div>
+          <h3 data-i18n="benefit1_h">Tailored for Professionals</h3>
+          <p data-i18n="benefit1_p">Business-focused vocabulary and cultural insights that matter in professional settings. Perfect for expanding your career opportunities.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">⚡</div>
+          <h3 data-i18n="benefit2_h">Learn Practical Phrases Fast</h3>
+          <p data-i18n="benefit2_p">Skip the theory. Focus on real conversations you'll use immediately. From greetings to business introductions in just 6 weeks.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">💪</div>
+          <h3 data-i18n="benefit3_h">Boost Confidence in Conversation</h3>
+          <p data-i18n="benefit3_p">Practice with native speakers and fellow learners. Build the confidence to use Chinese in real-world situations.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">🎯</div>
+          <h3 data-i18n="benefit4_h">Small Groups, Big Results</h3>
+          <p data-i18n="benefit4_p">Limited class sizes ensure personalized attention and faster progress. You're not just a number in our classroom.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Course Details Section -->
+  <section class="course-details" id="course-details">
+    <div class="container">
+      <h2 class="section-title" data-i18n="details_title">Course Details</h2>
+      <div class="details-grid">
+        <div class="detail-item">
+          <div class="detail-icon">📍</div>
+          <div class="detail-content">
+            <h3 data-i18n="loc_h">Location</h3>
+            <p data-i18n="loc_p">Raanana Hi-Tech Industrial Park<br>Convenient parking & public transport</p>
+          </div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-icon">🗓️</div>
+          <div class="detail-content">
+            <h3 data-i18n="sched_h">Schedule</h3>
+            <p data-i18n="sched_p">Once a week · 6 weeks total<br>1.5 hours per session</p>
+          </div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-icon">👥</div>
+          <div class="detail-content">
+            <h3 data-i18n="size_h">Class Size</h3>
+            <p data-i18n="size_p">Maximum 12 students<br>Intimate learning environment</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What You'll Learn Section -->
+  <section class="what-learn" id="what-learn">
+    <div class="container">
+      <h2 class="section-title" data-i18n="learn_title">What You'll Learn</h2>
+      <div class="checklist">
+        <div class="checklist-item"><span class="check-icon">✅</span><span data-i18n="learn1">Who you are - Perfect self-introductions</span></div>
+        <div class="checklist-item"><span class="check-icon">✅</span><span data-i18n="learn2">Where you're from - Geography and cultural context</span></div>
+        <div class="checklist-item"><span class="check-icon">✅</span><span data-i18n="learn3">What you do - Professional titles and industry terms</span></div>
+        <div class="checklist-item"><span class="check-icon">✅</span><span data-i18n="learn4">How to ask & respond — the right way</span></div>
+        <div class="checklist-item"><span class="check-icon">✅</span><span data-i18n="learn5">Chinese tones & pronunciation fundamentals</span></div>
+        <div class="checklist-item"><span class="check-icon">✅</span><span data-i18n="learn6">Cultural etiquette and business customs</span></div>
+        <div class="checklist-item"><span class="check-icon">✅</span><span data-i18n="learn7">Build confidence in real conversation scenarios</span></div>
+        <div class="checklist-item"><span class="check-icon">✅</span><span data-i18n="learn8">Essential phrases for travel and networking</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Urgency Section -->
+  <section class="urgency" id="urgency">
+    <div class="container">
+      <h2 data-i18n="urgency">🚀 Spots are limited – Sign up now!</h2>
+    </div>
+  </section>
+
+  <!-- Signup Form Section -->
+  <section class="signup" id="signup">
+    <div class="container">
+      <h2 class="section-title" data-i18n="signup_title">Secure Your Spot Today</h2>
+      <div class="form-container">
+        <form id="signupForm" novalidate>
+                <!-- Full Name -->
+            <div class="form-group">
+              <label for="name" data-i18n="form_name_label">Full Name *</label>
+              <input type="text" id="name" name="name" required aria-describedby="name-help" data-i18n-placeholder="ph_name">
+            </div>
+
+            <!-- Phone Number -->
+            <div class="form-group">
+              <label for="phone" data-i18n="form_phone_label">Phone Number *</label>
+              <input type="tel" id="phone" name="phone" required aria-describedby="phone-help" data-i18n-placeholder="ph_phone">
+            </div>
+
+            <!-- Why Interested? -->
+            <div class="form-group">
+              <label for="comments" data-i18n="form_comments_label">Why are you interested in learning Chinese?</label>
+              <textarea id="comments" name="comments" rows="4" data-i18n-placeholder="ph_comments"></textarea>
+            </div>
+
+            <!-- Have You Studied Chinese Before? -->
+            <div class="form-group">
+              <label for="studied" data-i18n="form_studied_label">Have you studied Chinese before?</label>
+              <select id="studied" name="studied">
+                  <option value="no" data-i18n="opt_no">No</option>
+                  <option value="yes" data-i18n="opt_yes">Yes</option>
+                  <option value="little" data-i18n="opt_little">Just a little (intro class or self-study)</option>
+              </select>
+            </div>
+
+            <!-- How Did You Hear About Us? -->
+            <div class="form-group">
+              <label for="source" data-i18n="form_source_label">How did you hear about us?</label>
+              <select id="source" name="source" aria-describedby="source-help">
+                  <option value="" data-i18n="opt_none">-- Select --</option>
+                  <option value="Facebook" data-i18n="opt_facebook">Facebook</option>
+                  <option value="Instagram" data-i18n="opt_instagram">Instagram</option>
+                  <option value="Google Search" data-i18n="opt_google">Google Search</option>
+                  <option value="Friend" data-i18n="opt_friend">Friend</option>
+                  <option value="Other" data-i18n="opt_other">Other</option>
+              </select>
+            </div>
+
+            <!-- Honeypot (must remain empty) -->
+            <div aria-hidden="true" class="honeypot">
+              <label for="website">Website</label>
+              <input type="text" id="website" name="website" autocomplete="off" tabindex="-1" />
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="submit-button" data-i18n="form_cta">
+              Reserve My Spot Now
+            </button>
+
+
+          <p class="trust-note" data-i18n="privacy">
+            🔒 We'll only contact you about the course. No spam, ever.
+          </p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p><strong data-i18n="footer_brand">Chinese for Beginners</strong></p>
+      <p data-i18n="footer_loc">Raanana Hi-Tech Industrial Park</p>
+      <p><span data-i18n="footer_contact">Email: info@chineseforbeginners.co.il | Phone: +972-XX-XXX-XXXX</span></p>
+      <p style="margin-top: 20px; font-size: 0.9rem; color: #999;" data-i18n="footer_legal">
+        © 2025 Chinese for Beginners. Privacy Policy | Terms of Service
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    /***********************************************************
+     * Config
+     *
+     * Replace the placeholder below with your Google Apps Script
+     * web app URL (which writes the POST payload to a Google Sheet).
+     *
+     * Example GAS: publish as "web app" and accept POST; then paste URL:
+     * const GAS_URL = 'https://script.google.com/macros/s/AKfycb.../exec';
+     ***********************************************************/
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwrYc4o-ZWg_K6gvTIoDAIIs1Dz16s6WEuGYSziOE3GGzk8r0EGPNR7byOagpS9lfee/exec';
+// i18n dictionary (added new keys & messages)
+// i18n dictionary (added new keys & messages)
+const DICT = {
+  en: {
+    title: " Chinese for Beginners - Master the Basics Fast",
+    lang: "Language:",
+    hero_h1: " Chinese for Beginners",
+    hero_sub: "No experience needed · Just curiosity and drive!",
+    cta: "Reserve My Spot",
+    why_title: "Why This Course?",
+    benefit1_h: "Tailored for Professionals",
+    benefit1_p: "Business-focused vocabulary and cultural insights that matter in professional settings. Perfect for expanding your career opportunities.",
+    benefit2_h: "Learn Practical Phrases Fast",
+    benefit2_p: "Skip the theory. Focus on real conversations you'll use immediately. From greetings to business introductions in just 6 weeks.",
+    benefit3_h: "Boost Confidence in Conversation",
+    benefit3_p: "Practice with native speakers and fellow learners. Build the confidence to use Chinese in real-world situations.",
+    benefit4_h: "Small Groups, Big Results",
+    benefit4_p: "Limited class sizes ensure personalized attention and faster progress. You're not just a number in our classroom.",
+    details_title: "Course Details",
+    loc_h: "Location",
+    loc_p: "Raanana Hi-Tech Industrial Park<br>Convenient parking & public transport",
+    sched_h: "Schedule",
+    sched_p: "Once a week · 6 weeks total<br>1.5 hours per session",
+    size_h: "Class Size",
+    size_p: "Maximum 12 students<br>Intimate learning environment",
+    learn_title: "What You'll Learn",
+    learn1: "Who you are - Perfect self-introductions",
+    learn2: "Where you're from - Geography and cultural context",
+    learn3: "What you do - Professional titles and industry terms",
+    learn4: "How to ask & respond — the right way",
+    learn5: "Chinese tones & pronunciation fundamentals",
+    learn6: "Cultural etiquette and business customs",
+    learn7: "Build confidence in real conversation scenarios",
+    learn8: "Essential phrases for travel and networking",
+    urgency: "🚀 Spots are limited – Sign up now!",
+    signup_title: "Secure Your Spot Today",
+    form_name_label: "Full Name *",
+    form_email_label: "Email Address *",
+    form_phone_label: "Phone Number *",
+    form_source_label: "How did you hear about us?",
+    opt_none: "-- Select --",
+    opt_facebook: "Facebook",
+    opt_instagram: "Instagram",
+    opt_google: "Google Search",
+    opt_friend: "Friend",
+    opt_other: "Other",
+    form_choose_day_label: "Choose Your Day",  // New key
+    opt_sunday: "Sunday",  // New option
+    opt_monday: "Monday",  // New option
+    opt_wednesday: "Wednesday",  // New option
+    form_studied_label: "Have you studied Chinese before?",  // New key for the studied question
+    opt_yes: "Yes",  // Option for Yes
+    opt_no: "No",  // Option for No
+    opt_little: "Just a little (intro class or self-study)",  // Option for little experience
+    form_cta: "Reserve My Spot Now",
+    ph_name: "Your full name",
+    ph_email: "you@company.com",
+    ph_phone: "+972-5X-XXX-XXXX",
+    ph_comments: "Any questions or preferences (optional)",
+    privacy: "🔒 We'll only contact you about the course. No spam, ever.",
+    footer_brand: "Chinese for Beginners",
+    footer_loc: "Raanana Hi-Tech Industrial Park",
+    footer_contact: "Email: info@chineseforbeginners.co.il | Phone: +972-XX-XXX-XXXX",
+    footer_legal: "© 2025 Chinese for Beginners. Privacy Policy | Terms of Service",
+    msg_success: "Thank you — your spot request was received. We'll contact you soon!",
+    msg_error: "Sorry — there was an error submitting. Please try again later.",
+    msg_processing: "Processing...",
+    msg_blocked: "Submission blocked.",
+    msg_required: "Please complete the required fields."
+  },
+  he: {
+    title: "🈴 סינית למתחילים - לומדים מהר ובקלות",
+    lang: "שפה:",
+    hero_h1: "🈴 סינית למתחילים",
+    hero_sub: "לא צריך ניסיון – רק סקרנות ומוטיבציה!",
+    cta: "שריינו לי מקום",
+    why_title: "למה הקורס הזה?",
+    benefit1_h: "מותאם לאנשי עסקים",
+    benefit1_p: "אוצר מילים עסקי ותובנות תרבותיות לרגעים החשובים. מושלם להרחבת ההזדמנויות הקרייריסטיות.",
+    benefit2_h: "לומדים משפטים שימושיים מהר",
+    benefit2_p: "מדלגים על התיאוריה ומתמקדים בשיחות אמיתיות. מברכות ועד היכרות עסקית תוך 6 שבועות.",
+    benefit3_h: "ביטחון בשיחה אמיתית",
+    benefit3_p: "תרגול עם דוברי שפת אם ומשתתפים נוספים. תבנו ביטחון לשימוש בסינית במצבים אמיתיים.",
+    benefit4_h: "קבוצות קטנות – תוצאות גדולות",
+    benefit4_p: "מספר משתתפים מוגבל לקבלת יחס אישי והתקדמות מהירה. לא עוד מספר בכיתה.",
+    details_title: "פרטי הקורס",
+    loc_h: "מיקום",
+    loc_p: "פארק ההייטק רעננה<br>חניה נוחה ותחבורה ציבורית",
+    sched_h: "זמנים",
+    sched_p: "פעם בשבוע · 6 שבועות<br>90 דק׳ למפגש",
+    size_h: "גודל קבוצה",
+    size_p: "עד 12 משתתפים<br>אווירה אינטימית וממוקדת",
+    learn_title: "מה נלמד",
+    learn1: "מי אתם – הצגה עצמית מושלמת",
+    learn2: "מאיפה אתם – הקשר גיאוגרפי ותרבותי",
+    learn3: "מה אתם עושים – תפקידים מקצועיים ומונחים עסקיים",
+    learn4: "איך לשאול ולענות — בדרך הנכונה",
+    learn5: "טונים בסינית ועקרונות היגוי",
+    learn6: "נימוסים וכללי תרבות בעסקים",
+    learn7: "ביטחון בשיחות אמיתיות",
+    learn8: "משפטים חיוניים לנסיעות ונטוורקינג",
+    urgency: "🚀 מספר המקומות מוגבל – הרשמו עכשיו!",
+    signup_title: "שריינו מקום כבר היום",
+    form_name_label: "שם מלא *",
+    form_email_label: "אימייל *",
+    form_phone_label: "טלפון *",
+    form_source_label: "איך שמעת עלינו?",
+    opt_none: "-- בחר --",
+    opt_facebook: "פייסבוק",
+    opt_instagram: "אינסטגרם",
+    opt_google: "חיפוש בגוגל",
+    opt_friend: "חבר/ה",
+    opt_other: "אחר",
+    form_choose_day_label: "בחר יום",  // New key in Hebrew
+    opt_sunday: "ראשון",  // New option in Hebrew
+    opt_monday: "שני",  // New option in Hebrew
+    opt_wednesday: "רביעי",  // New option in Hebrew
+    form_studied_label: "האם למדת סינית בעבר?",  // New key in Hebrew
+    opt_yes: "כן",  // Option for Yes in Hebrew
+    opt_no: "לא",  // Option for No in Hebrew
+    opt_little: "רק קצת (שיעור מבוא או לימוד עצמי)",  // Option for little experience in Hebrew
+    form_cta: "שריינו מקום עכשיו",
+    ph_name: "שם מלא",
+    ph_email: "you@company.com",
+    ph_phone: "+972-5X-XXX-XXXX",
+    ph_comments: "שאלות או העדפות (אופציונלי)",
+    privacy: "🔒 ניצור קשר רק לגבי הקורס. בלי ספאם.",
+    footer_brand: "סינית למתחילים",
+    footer_loc: "פארק ההייטק רעננה",
+    footer_contact: "אימייל: info@chineseforbeginners.co.il | טלפון: +972-XX-XXX-XXXX",
+    footer_legal: "© 2025 סינית למתחילים. מדיניות פרטיות | תנאי שימוש",
+    msg_success: "תודה — פנייתך נשלחה. נחזור אליך בקרוב!",
+    msg_error: "אופס — קרתה שגיאה בשליחה. נסה שוב מאוחר יותר.",
+    msg_processing: "מעבד...",
+    msg_blocked: "ההגשה נחסמה.",
+    msg_required: "אנא מלא/י את השדות החובה."
+  }
+};
+
+
+
+    // Apply language - enhanced to set placeholders & option labels
+    function applyLang(lang) {
+      const dict = DICT[lang] || DICT.en;
+      document.documentElement.lang = lang;
+      document.documentElement.dir = (lang === 'he') ? 'rtl' : 'ltr';
+      document.body.style.textAlign = (lang === 'he') ? 'right' : 'left';
+
+      // Toggle button states
+      document.getElementById('btn-en').classList.toggle('current', lang === 'en');
+      document.getElementById('btn-he').classList.toggle('current', lang === 'he');
+
+      // Replace all [data-i18n] text/HTML content
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (!dict[key]) return;
+        // Use innerHTML everywhere to allow <br> where needed
+        el.innerHTML = dict[key];
+      });
+
+      // Placeholders for inputs/textarea that declare data-i18n-placeholder
+      document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (dict[key]) {
+          el.setAttribute('placeholder', dict[key]);
+        }
+      });
+
+      // Update select <option> labels (they have data-i18n)
+      document.querySelectorAll('select option[data-i18n]').forEach(opt => {
+        const k = opt.getAttribute('data-i18n');
+        if (dict[k]) opt.textContent = dict[k];
+      });
+
+      // Update <title> if present
+      const titleEl = document.querySelector('title[data-i18n]');
+      if (titleEl) titleEl.innerHTML = dict.title || titleEl.innerHTML;
+    }
+
+    // Auto-detect language on first load
+    const stored = localStorage.getItem('lang');
+    const browserLang = (navigator.language || 'en').toLowerCase().startsWith('he') ? 'he' : 'en';
+    const initialLang = stored || browserLang;
+
+    // Smooth scroll to signup form
+    function scrollToSignup() {
+      const signupSection = document.getElementById('signup');
+      signupSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Show message banner
+    function showBanner(type, message) {
+      const banner = document.getElementById('messageBanner');
+      banner.className = 'message-banner ' + (type === 'success' ? 'success' : 'error') + ' show';
+      banner.textContent = message;
+      // remove after 5 seconds
+      setTimeout(() => {
+        banner.className = 'message-banner'; banner.textContent = '';
+      }, 5000);
+    }
+
+
+
+
+
+    // Intersection animations
+    function addScrollAnimations() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.style.animation = 'fadeInUp 0.8s ease-out forwards';
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+      const animated = document.querySelectorAll('.benefit-card, .detail-item, .checklist-item, .form-container');
+      animated.forEach((el) => {
+        el.style.opacity = '0'; el.style.transform = 'translateY(30px)'; observer.observe(el);
+      });
+    }
+
+    // Init
+    document.addEventListener('DOMContentLoaded', () => {
+      addScrollAnimations();
+
+      // language init
+      applyLang(initialLang);
+
+      // listeners
+      document.getElementById('btn-en').addEventListener('click', () => { applyLang('en'); localStorage.setItem('lang','en'); });
+      document.getElementById('btn-he').addEventListener('click', () => { applyLang('he'); localStorage.setItem('lang','he'); });
+
+      // a11y focus styles
+      document.querySelectorAll('button, input, a, textarea, select').forEach(el => {
+        el.addEventListener('focus', function() { this.style.outline = '3px solid #FFD700'; this.style.outlineOffset = '2px'; });
+        el.addEventListener('blur', function() { this.style.outline = ''; this.style.outlineOffset = ''; });
+      });
+
+      // form submit handler is attached via onsubmit attribute, but bind again for safety
+    });
+
+    // Keyboard navigation for CTA button
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Enter' && event.target.classList.contains('cta-button')) {
+        scrollToSignup();
+      }
+    });
+
+
+
+
+    // Form submission handler - sends data to Google Apps Script (GAS_URL)
+    // Working form submission handler that matches your HTML form fields
+document.getElementById('signupForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    // Get current language for messages
+    const currentLang = document.documentElement.lang || 'en';
+    const dict = DICT[currentLang] || DICT.en;
+
+    // Validate required fields (name and phone are required in your form)
+    const nameField = document.getElementById('name');
+    const phoneField = document.getElementById('phone');
+
+    if (!nameField.value.trim()) {
+        alert(dict.msg_required || 'Please enter your name');
+        nameField.focus();
+        return;
+    }
+
+    if (!phoneField.value.trim()) {
+        alert(dict.msg_required || 'Please enter your phone number');
+        phoneField.focus();
+        return;
+    }
+
+    // Validate Israeli phone number format
+    const phoneRegex = /^(\+972|0)5[0-9]-?[0-9]{3}-?[0-9]{4}$/;
+    const cleanPhone = phoneField.value.replace(/\s/g, '');
+    if (!phoneRegex.test(cleanPhone)) {
+        alert(currentLang === 'he' ? 
+            'אנא הכנס מספר טלפון ישראלי תקין (למשל: 050-123-4567)' : 
+            'Please enter a valid Israeli phone number (e.g., 050-123-4567)'
+        );
+        phoneField.focus();
+        return;
+    }
+
+    // Check honeypot field (anti-spam)
+    const honeypot = document.getElementById('website');
+    if (honeypot && honeypot.value) {
+        console.log('Bot detected, submission blocked');
+        return; // Silent block for bots
+    }
+
+    const formData = new FormData();
+
+    // Append form fields that actually exist in your HTML
+    formData.append('שם', nameField.value.trim());
+    formData.append('טלפון', cleanPhone);
+    formData.append('הערות', document.getElementById('comments').value.trim());
+    formData.append('ניסיון קודם בסינית', document.getElementById('studied').value);
+    formData.append('איך שמעת עלינו', document.getElementById('source').value);
+    
+    // Add timestamp
+    formData.append('תאריך הגשה', new Date().toLocaleString('he-IL'));
+
+    const btn = this.querySelector('button');
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = dict.msg_processing || "נשלח...";
+
+    try {
+        await fetch(GAS_URL, {
+            method: 'POST',
+            body: formData
+        });
+
+        // Show success message using your existing banner system
+        showBanner('success', dict.msg_success || 'תודה! נחזור אליך בקרוב');
+
+        this.reset();
+    } catch (err) {
+        console.error('Error in submission:', err);
+        showBanner('error', dict.msg_error || 'שגיאה בשליחה. נסה שוב.');
+    } finally {
+        btn.disabled = false;
+        btn.textContent = originalText;
+    }
+});
+
+
+  </script>
+</body>
+</html>
