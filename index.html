@@ -181,9 +181,52 @@
       .form-container { margin: 0 20px; padding: 30px; }
       .detail-item { flex-direction: column; text-align: center; }
       .detail-icon { margin-inline-end: 0; margin-bottom: 15px; }
-      .lang-toggle { left: 50%; right: auto; transform: translateX(-50%); }
+      .lang-toggle { left: 50%; right: auto; transform: translateX(-50%); padding-top: 50px;}
+      .lang-toggle {top: 52px;}
     }
+    .lang-toggle {
+        position: fixed;
+        top: 60px;  /* was 10px — now below the banner */
+        right: 10px;
+        z-index: 2100; /* make sure it’s above content but below menu overlays */
+      }
+
     html { scroll-behavior: smooth; }
+   .sale-banner {
+  width: 100%;
+  background-color: #ff4444;
+  color: #fff;
+  overflow: hidden;
+  white-space: nowrap;
+  box-sizing: border-box;
+  font-size: 1.1em;
+  font-weight: bold;
+  padding: 10px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2000;
+}
+
+.sale-banner span {
+  display: inline-block;
+  animation: marquee 20s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+body {
+  padding-top: 50px; /* to avoid content hiding under banner */
+}
+
+
   </style>
 </head>
 <body>
@@ -197,6 +240,8 @@
     <button id="btn-he" type="button">HE</button>
   </div>
 
+
+  <div id="saleBanner" class="sale-banner" data-i18n="sale_text_en"></div>
   <!-- Hero Section -->
   <section class="hero" id="hero">
     <div class="container">
@@ -319,10 +364,29 @@
               <input type="tel" id="phone" name="phone" required aria-describedby="phone-help" data-i18n-placeholder="ph_phone">
             </div>
 
-            <!-- Why Interested? -->
+            <!-- Inside the form, replace the "Why are you interested..." textarea with this -->
+
+            <!-- Choose Your Day -->
             <div class="form-group">
-              <label for="comments" data-i18n="form_comments_label">Why are you interested in learning Chinese?</label>
-              <textarea id="comments" name="comments" rows="4" data-i18n-placeholder="ph_comments"></textarea>
+              <label for="day" data-i18n="form_choose_day_label">Choose Your Day</label>
+              <select id="day" name="day">
+                <option value="" data-i18n="opt_none">-- Select --</option>
+                <option value="Sunday" data-i18n="opt_sunday">Sunday</option>
+                <option value="Monday" data-i18n="opt_monday">Monday</option>
+                <option value="Wednesday" data-i18n="opt_wednesday">Wednesday</option>
+              </select>
+            </div>
+
+            <!-- Why Interested -->
+            <div class="form-group">
+              <label for="why" data-i18n="form_why_label">Why do you want to learn Chinese?</label>
+              <select id="why" name="why">
+                <option value="" data-i18n="opt_none">-- Select --</option>
+                <option value="Travel" data-i18n="opt_travel">Travel</option>
+                <option value="Business" data-i18n="opt_business">Business</option>
+                <option value="Culture" data-i18n="opt_culture">Culture</option>
+                <option value="Other" data-i18n="opt_other">Other</option>
+              </select>
             </div>
 
             <!-- Have You Studied Chinese Before? -->
@@ -390,25 +454,25 @@
      * Example GAS: publish as "web app" and accept POST; then paste URL:
      * const GAS_URL = 'https://script.google.com/macros/s/AKfycb.../exec';
      ***********************************************************/
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbwrYc4o-ZWg_K6gvTIoDAIIs1Dz16s6WEuGYSziOE3GGzk8r0EGPNR7byOagpS9lfee/exec';
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbyrcxjXuRo7IJ3EjxgVdOtLXjLLp3SZ1QMIxXgVMC9tVjoNbbWoH8SzeW-2ci8PKVlZ/exec';
 // i18n dictionary (added new keys & messages)
 // i18n dictionary (added new keys & messages)
 const DICT = {
   en: {
-    title: " Chinese for Beginners - Master the Basics Fast",
+    title: "Chinese for Beginners - Speak from Day One",
     lang: "Language:",
-    hero_h1: " Chinese for Beginners",
-    hero_sub: "No experience needed · Just curiosity and drive!",
-    cta: "Reserve My Spot",
+    hero_h1: "Chinese for Beginners",
+    hero_sub: "Start speaking Chinese from day one — even if you've never learned a word before.",
+    cta: "Join the Next Class Now",
     why_title: "Why This Course?",
     benefit1_h: "Tailored for Professionals",
-    benefit1_p: "Business-focused vocabulary and cultural insights that matter in professional settings. Perfect for expanding your career opportunities.",
+    benefit1_p: "Business-focused vocabulary and cultural insights that matter in real settings. Perfect for expanding your career opportunities.",
     benefit2_h: "Learn Practical Phrases Fast",
     benefit2_p: "Skip the theory. Focus on real conversations you'll use immediately. From greetings to business introductions in just 6 weeks.",
     benefit3_h: "Boost Confidence in Conversation",
-    benefit3_p: "Practice with native speakers and fellow learners. Build the confidence to use Chinese in real-world situations.",
+    benefit3_p: "Practice with native speakers and fellow learners. Gain the confidence to speak Chinese naturally.",
     benefit4_h: "Small Groups, Big Results",
-    benefit4_p: "Limited class sizes ensure personalized attention and faster progress. You're not just a number in our classroom.",
+    benefit4_p: "Limited class sizes ensure personal attention and faster progress.",
     details_title: "Course Details",
     loc_h: "Location",
     loc_p: "Raanana Hi-Tech Industrial Park<br>Convenient parking & public transport",
@@ -417,14 +481,14 @@ const DICT = {
     size_h: "Class Size",
     size_p: "Maximum 12 students<br>Intimate learning environment",
     learn_title: "What You'll Learn",
-    learn1: "Who you are - Perfect self-introductions",
-    learn2: "Where you're from - Geography and cultural context",
-    learn3: "What you do - Professional titles and industry terms",
-    learn4: "How to ask & respond — the right way",
-    learn5: "Chinese tones & pronunciation fundamentals",
-    learn6: "Cultural etiquette and business customs",
-    learn7: "Build confidence in real conversation scenarios",
-    learn8: "Essential phrases for travel and networking",
+    learn1: "Perfect self-introductions",
+    learn2: "Where you're from — geography and culture",
+    learn3: "What you do — professional terms",
+    learn4: "How to ask & respond the right way",
+    learn5: "Chinese tones & pronunciation",
+    learn6: "Cultural etiquette and customs",
+    learn7: "Real conversation practice",
+    learn8: "Phrases for travel and networking",
     urgency: "🚀 Spots are limited – Sign up now!",
     signup_title: "Secure Your Spot Today",
     form_name_label: "Full Name *",
@@ -437,60 +501,70 @@ const DICT = {
     opt_google: "Google Search",
     opt_friend: "Friend",
     opt_other: "Other",
-    form_choose_day_label: "Choose Your Day",  // New key
-    opt_sunday: "Sunday",  // New option
-    opt_monday: "Monday",  // New option
-    opt_wednesday: "Wednesday",  // New option
-    form_studied_label: "Have you studied Chinese before?",  // New key for the studied question
-    opt_yes: "Yes",  // Option for Yes
-    opt_no: "No",  // Option for No
-    opt_little: "Just a little (intro class or self-study)",  // Option for little experience
-    form_cta: "Reserve My Spot Now",
+    form_choose_day_label: "Pick Your Preferred Class Day",
+    opt_sunday: "Sunday",
+    opt_monday: "Monday",
+    opt_wednesday: "Wednesday",
+    form_why_label: "Why do you want to learn Chinese?",
+    opt_travel: "Travel Adventures",
+    opt_business: "Career Growth",
+    opt_culture: "Cultural Connection",
+    opt_personal: "Personal Challenge",
+    opt_other: "Other",
+    form_cta: "Join Now",
     ph_name: "Your full name",
     ph_email: "you@company.com",
     ph_phone: "+972-5X-XXX-XXXX",
     ph_comments: "Any questions or preferences (optional)",
-    privacy: "🔒 We'll only contact you about the course. No spam, ever.",
+    privacy: "🔒 We'll only contact you about the course. No spam.",
     footer_brand: "Chinese for Beginners",
     footer_loc: "Raanana Hi-Tech Industrial Park",
     footer_contact: "Email: info@chineseforbeginners.co.il | Phone: +972-XX-XXX-XXXX",
     footer_legal: "© 2025 Chinese for Beginners. Privacy Policy | Terms of Service",
-    msg_success: "Thank you — your spot request was received. We'll contact you soon!",
+    msg_success: "🎉 Success! Your spot is reserved. We'll be in touch soon with class details.",
     msg_error: "Sorry — there was an error submitting. Please try again later.",
     msg_processing: "Processing...",
+    msg_phone_invalid: "Please enter a valid Israeli phone number (e.g., 050-123-4567)",
     msg_blocked: "Submission blocked.",
-    msg_required: "Please complete the required fields."
+    msg_required: "Please complete the required fields.",
+    sale_text: "🔥 Limited Offer — 15% OFF This Month Only! 🔥 🎯 Enroll today — Start speaking Chinese in 6 weeks! 📅 New groups start Sunday!",
+    form_why_label: "Why are you interested in learning Chinese?",
+    form_studied_label: "Have you studied Chinese before?",
+    opt_no: "No",
+    opt_yes: "Yes",
+    opt_little: "Just a little (intro class or self-study)"
+    
   },
   he: {
-    title: "🈴 סינית למתחילים - לומדים מהר ובקלות",
+    title: "סינית למתחילים - מדברים מהיום הראשון",
     lang: "שפה:",
-    hero_h1: "🈴 סינית למתחילים",
-    hero_sub: "לא צריך ניסיון – רק סקרנות ומוטיבציה!",
-    cta: "שריינו לי מקום",
+    hero_h1: "סינית למתחילים",
+    hero_sub: "מתחילים לדבר סינית כבר מהשיעור הראשון — גם אם לא למדתם מילה בעבר.",
+    cta: "הצטרפו לשיעור הקרוב עכשיו",
     why_title: "למה הקורס הזה?",
-    benefit1_h: "מותאם לאנשי עסקים",
-    benefit1_p: "אוצר מילים עסקי ותובנות תרבותיות לרגעים החשובים. מושלם להרחבת ההזדמנויות הקרייריסטיות.",
-    benefit2_h: "לומדים משפטים שימושיים מהר",
+    benefit1_h: "מותאם לאנשי מקצוע",
+    benefit1_p: "אוצר מילים עסקי ותובנות תרבותיות למפגשים אמיתיים. מושלם להרחבת ההזדמנויות הקרייריסטיות.",
+    benefit2_h: "משפטים שימושיים במהירות",
     benefit2_p: "מדלגים על התיאוריה ומתמקדים בשיחות אמיתיות. מברכות ועד היכרות עסקית תוך 6 שבועות.",
-    benefit3_h: "ביטחון בשיחה אמיתית",
-    benefit3_p: "תרגול עם דוברי שפת אם ומשתתפים נוספים. תבנו ביטחון לשימוש בסינית במצבים אמיתיים.",
+    benefit3_h: "ביטחון בשיחה",
+    benefit3_p: "תרגול עם דוברי שפת אם ומשתתפים נוספים. תבנו ביטחון לשיחה טבעית בסינית.",
     benefit4_h: "קבוצות קטנות – תוצאות גדולות",
-    benefit4_p: "מספר משתתפים מוגבל לקבלת יחס אישי והתקדמות מהירה. לא עוד מספר בכיתה.",
+    benefit4_p: "מספר משתתפים מוגבל לקבלת יחס אישי והתקדמות מהירה.",
     details_title: "פרטי הקורס",
     loc_h: "מיקום",
     loc_p: "פארק ההייטק רעננה<br>חניה נוחה ותחבורה ציבורית",
     sched_h: "זמנים",
-    sched_p: "פעם בשבוע · 6 שבועות<br>90 דק׳ למפגש",
+    sched_p: "פעם בשבוע · 6 שבועות<br>90 דקות למפגש",
     size_h: "גודל קבוצה",
-    size_p: "עד 12 משתתפים<br>אווירה אינטימית וממוקדת",
+    size_p: "עד 12 משתתפים<br>אווירה אינטימית",
     learn_title: "מה נלמד",
-    learn1: "מי אתם – הצגה עצמית מושלמת",
-    learn2: "מאיפה אתם – הקשר גיאוגרפי ותרבותי",
-    learn3: "מה אתם עושים – תפקידים מקצועיים ומונחים עסקיים",
-    learn4: "איך לשאול ולענות — בדרך הנכונה",
-    learn5: "טונים בסינית ועקרונות היגוי",
-    learn6: "נימוסים וכללי תרבות בעסקים",
-    learn7: "ביטחון בשיחות אמיתיות",
+    learn1: "הצגה עצמית מושלמת",
+    learn2: "מאיפה אתם — גיאוגרפיה ותרבות",
+    learn3: "מה אתם עושים — מונחים מקצועיים",
+    learn4: "איך לשאול ולענות נכון",
+    learn5: "הגייה וטונים בסינית",
+    learn6: "נימוסים וכללי תרבות",
+    learn7: "תרגול שיחה אמיתית",
     learn8: "משפטים חיוניים לנסיעות ונטוורקינג",
     urgency: "🚀 מספר המקומות מוגבל – הרשמו עכשיו!",
     signup_title: "שריינו מקום כבר היום",
@@ -504,15 +578,17 @@ const DICT = {
     opt_google: "חיפוש בגוגל",
     opt_friend: "חבר/ה",
     opt_other: "אחר",
-    form_choose_day_label: "בחר יום",  // New key in Hebrew
-    opt_sunday: "ראשון",  // New option in Hebrew
-    opt_monday: "שני",  // New option in Hebrew
-    opt_wednesday: "רביעי",  // New option in Hebrew
-    form_studied_label: "האם למדת סינית בעבר?",  // New key in Hebrew
-    opt_yes: "כן",  // Option for Yes in Hebrew
-    opt_no: "לא",  // Option for No in Hebrew
-    opt_little: "רק קצת (שיעור מבוא או לימוד עצמי)",  // Option for little experience in Hebrew
-    form_cta: "שריינו מקום עכשיו",
+    form_choose_day_label: "בחרו את יום השיעור המועדף עליכם",
+    opt_sunday: "ראשון",
+    opt_monday: "שני",
+    opt_wednesday: "רביעי",
+    form_why_label: "למה אתם רוצים ללמוד סינית?",
+    opt_travel: "טיולים והרפתקאות",
+    opt_business: "קידום בקריירה",
+    opt_culture: "חיבור לתרבות",
+    opt_personal: "אתגר אישי",
+    opt_other: "אחר",
+    form_cta: "הצטרפו עכשיו",
     ph_name: "שם מלא",
     ph_email: "you@company.com",
     ph_phone: "+972-5X-XXX-XXXX",
@@ -522,13 +598,23 @@ const DICT = {
     footer_loc: "פארק ההייטק רעננה",
     footer_contact: "אימייל: info@chineseforbeginners.co.il | טלפון: +972-XX-XXX-XXXX",
     footer_legal: "© 2025 סינית למתחילים. מדיניות פרטיות | תנאי שימוש",
-    msg_success: "תודה — פנייתך נשלחה. נחזור אליך בקרוב!",
+    msg_success: "🎉 הצלחה! המקום שלך נשמר. ניצור קשר בקרוב עם פרטי השיעור.",
     msg_error: "אופס — קרתה שגיאה בשליחה. נסה שוב מאוחר יותר.",
     msg_processing: "מעבד...",
+    msg_phone_invalid: "אנא הכנס מספר טלפון ישראלי תקין (למשל: 050-123-4567)",
     msg_blocked: "ההגשה נחסמה.",
-    msg_required: "אנא מלא/י את השדות החובה."
+    msg_required: "אנא מלא/י את השדות החובה.",
+    sale_text: "🔥 מבצע מיוחד — 15% הנחה לחודש הקרוב בלבד! 🎯 הירשמו היום — מתחילים לדבר סינית תוך 6 שבועות! 📅 קבוצות חדשות מתחילות ביום ראשון!",
+    form_why_label: "למה אתם רוצים ללמוד סינית?",
+    form_studied_label: "למדתם סינית בעבר?",
+    opt_no: "לא",
+    opt_yes: "כן",
+    opt_little: "רק קצת (שיעור מבוא או לימוד עצמי)",
+
+
   }
 };
+
 
 
 
@@ -558,6 +644,7 @@ const DICT = {
           el.setAttribute('placeholder', dict[key]);
         }
       });
+      
 
       // Update select <option> labels (they have data-i18n)
       document.querySelectorAll('select option[data-i18n]').forEach(opt => {
@@ -568,6 +655,13 @@ const DICT = {
       // Update <title> if present
       const titleEl = document.querySelector('title[data-i18n]');
       if (titleEl) titleEl.innerHTML = dict.title || titleEl.innerHTML;
+
+      // 🔹 Update the sale banner text
+      const saleBanner = document.getElementById('saleBanner');
+      if (saleBanner && dict.sale_text) {
+        saleBanner.innerHTML = `<span>${dict.sale_text}</span>`;
+      }
+
     }
 
     // Auto-detect language on first load
@@ -590,6 +684,7 @@ const DICT = {
       setTimeout(() => {
         banner.className = 'message-banner'; banner.textContent = '';
       }, 5000);
+
     }
 
 
@@ -691,10 +786,11 @@ document.getElementById('signupForm').addEventListener('submit', async function 
     // Append form fields that actually exist in your HTML
     formData.append('שם', nameField.value.trim());
     formData.append('טלפון', cleanPhone);
-    formData.append('הערות', document.getElementById('comments').value.trim());
+    formData.append('בחר יום', document.getElementById('day').value);
+    formData.append('סיבה ללמידה', document.getElementById('why').value);
     formData.append('ניסיון קודם בסינית', document.getElementById('studied').value);
     formData.append('איך שמעת עלינו', document.getElementById('source').value);
-    
+
     // Add timestamp
     formData.append('תאריך הגשה', new Date().toLocaleString('he-IL'));
 
