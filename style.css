@@ -1,0 +1,353 @@
+/* ===============================
+   Base / Reset
+=============================== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root{
+  --brand-red:#D32F2F;
+  --brand-red-dark:#B71C1C;
+  --brand-gold:#FFD700;
+  --text:#333;
+  --muted:#666;
+  --bg:#fff;
+  --surface:#F5F5F5;
+  --success:#4CAF50;
+  --error:#f44336;
+}
+
+/* Tipography */
+body {
+  font-family: 'Varela Round', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+               Roboto, 'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+  overflow-x: hidden;
+  transition: direction .2s ease, text-align .2s ease;
+  padding-top: 50px; /* space for sale banner */
+}
+
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+html { scroll-behavior: smooth; }
+
+/* ===============================
+   Message Banner
+=============================== */
+.message-banner{
+  position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+  padding: 15px; text-align: center; font-weight: 600;
+  transform: translateY(-120%); transition: transform .28s ease;
+  pointer-events: none;
+}
+.message-banner.show{ transform: translateY(0); pointer-events: auto; }
+.message-banner.success{ background: var(--success); color:#fff; }
+.message-banner.error{ background: var(--error); color:#fff; }
+
+/* ===============================
+   Honeypot (off-screen)
+=============================== */
+.honeypot{
+  position: absolute !important;
+  left: -9999px !important; top: auto !important;
+  width: 1px !important; height: 1px !important; overflow: hidden !important;
+}
+
+/* ===============================
+   Language Toggle
+=============================== */
+.lang-toggle{
+  position: fixed; top: 60px; right: 16px; z-index: 2100;
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,.85); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  border: 1px solid #eee; padding: 10px 14px; border-radius: 999px;
+  box-shadow: 0 8px 20px rgba(0,0,0,.08);
+}
+.lang-toggle button{
+  border: none; background: var(--brand-red); color:#fff; font-weight: 700;
+  padding: 8px 14px; border-radius: 999px; cursor: pointer;
+  box-shadow: 0 6px 18px rgba(211,47,47,.35); transition: all .25s ease;
+}
+.lang-toggle button:hover{ transform: translateY(-2px); background: var(--brand-red-dark); }
+.lang-toggle .current{ background: var(--brand-gold); color:#111; box-shadow: 0 6px 18px rgba(255,215,0,.35); }
+
+/* RTL tweak for toggle position */
+[dir="rtl"] .lang-toggle{ right: auto; left: 16px; }
+
+/* ===============================
+   Sale Banner
+=============================== */
+.sale-banner{
+  width: 100%; background-color: #ff4444; color:#fff;
+  overflow: hidden; white-space: nowrap; box-sizing: border-box;
+  font-size: 1.1em; font-weight: bold; padding: 10px 0;
+  position: fixed; top: 0; left: 0; z-index: 2000;
+}
+.sale-banner span{ display: inline-block; animation: marquee 20s linear infinite; }
+@keyframes marquee{ 0%{ transform: translateX(100%);} 100%{ transform: translateX(-100%);} }
+
+/* Reduced motion: stop marquee */
+@media (prefers-reduced-motion: reduce){
+  .sale-banner span{ animation: none; }
+}
+
+/* ===============================
+   Hero Section
+=============================== */
+.hero{
+  min-height: 100vh;
+  background: linear-gradient(135deg, rgba(211, 47, 47, 0.8), rgba(255, 215, 0, 0.6)),
+              url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1200 600%22><rect fill=%22%23f5f5f5%22 width=%221200%22 height=%22600%22/><circle fill=%22%23ffebee%22 cx=%22200%22 cy=%22150%22 r=%2280%22 opacity=%220.3%22/><circle fill=%22%23fff3e0%22 cx=%22900%22 cy=%22200%22 r=%22120%22 opacity=%220.2%22/><circle fill=%22%23ffebee%22 cx=%22600%22 cy=%22400%22 r=%22100%22 opacity=%220.3%22/><path fill=%22%23d32f2f%22 opacity=%220.1%22 d=%22M100,500 Q300,300 500,500 T900,500 L900,600 L100,600 Z%22/></svg>');
+  background-size: cover; background-position: center;
+  display: flex; align-items: center; position: relative;
+  color: #fff; text-align: center;
+}
+.hero-content{ position: relative; z-index: 2; animation: fadeInUp 1s ease-out; }
+.hero h1{
+  font-size: clamp(2.2rem, 6vw, 4.5rem); font-weight: 800; margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,.3); letter-spacing: -0.02em;
+}
+.hero-subtitle{
+  font-size: clamp(1.1rem, 3vw, 1.8rem); margin-bottom: 2.2rem; font-weight: 300;
+  opacity: .95; text-shadow: 1px 1px 2px rgba(0,0,0,.2);
+}
+.cta-button{
+  display: inline-block; background: var(--brand-red); color:#fff;
+  padding: 18px 40px; font-size: 1.2rem; font-weight: 700; text-decoration: none;
+  border-radius: 50px; box-shadow: 0 8px 25px rgba(211,47,47,.4);
+  transition: all .3s ease; cursor: pointer; border: none; position: relative; overflow: hidden;
+}
+.cta-button:hover{ transform: translateY(-3px); box-shadow: 0 12px 35px rgba(211,47,47,.6); background: var(--brand-red-dark); }
+.cta-button::before{
+  content:''; position:absolute; top:0; left:-100%; width:100%; height:100%;
+  background: linear-gradient(90deg, transparent, rgba(255,215,0,.35), transparent);
+  transition:left .5s ease;
+}
+.cta-button:hover::before{ left:100%; }
+.cta-button:focus{ outline: 3px solid var(--brand-gold); outline-offset: 3px; }
+
+/* ===============================
+   Picture Section
+=============================== */
+.picture-section{ display:flex; justify-content:center; align-items:center; margin:20px 0; }
+.picture-frame{
+  position:relative; display:inline-block; border-radius:15px; overflow:hidden;
+  box-shadow:0 8px 24px rgba(0,0,0,.1); border:5px solid #D4AF37; transition: all .3s ease;
+}
+.picture-frame:hover{ box-shadow:0 12px 36px rgba(0,0,0,.15); transform: scale(1.05); }
+.picture{ width:100%; height:auto; display:block; border-radius:10px; transition: transform .3s ease; }
+.picture:hover{ transform: scale(1.02); }
+
+/* ===============================
+   Why Section
+=============================== */
+.why-course{ padding: 100px 0; background: var(--surface); }
+.section-title{ text-align:center; font-size: clamp(2rem, 4vw, 3rem); font-weight:700; margin-bottom:60px; color: var(--text); }
+.benefits-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:40px; margin-top:60px; }
+.benefit-card{
+  background:#fff; padding:40px 30px; border-radius:20px; text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,.1); transition: transform .3s ease, box-shadow .3s ease; cursor: pointer;
+}
+.benefit-card:hover{ transform: translateY(-10px); box-shadow:0 20px 40px rgba(0,0,0,.15); }
+.benefit-icon{
+  width:80px; height:80px; margin:0 auto 25px; background: linear-gradient(135deg, var(--brand-red), var(--brand-gold));
+  border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2.5rem;
+}
+.benefit-card h3{ font-size:1.35rem; font-weight:700; margin-bottom:12px; color: var(--text); }
+.benefit-card p{ color: var(--muted); font-size:1rem; line-height:1.6; }
+
+/* ===============================
+   Details
+=============================== */
+.course-details{ padding: 100px 0; background:#fff; }
+.details-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:40px; margin-top:60px; }
+.detail-item{ display:flex; align-items:center; padding:30px; background: var(--surface); border-radius:15px; transition: all .3s ease; }
+.detail-item:hover{ background: var(--brand-gold); transform: scale(1.02); }
+.detail-icon{ font-size:3rem; margin-inline-end:25px; color: var(--brand-red); }
+.detail-content h3{ font-size:1.25rem; font-weight:700; margin-bottom:6px; color: var(--text); }
+.detail-content p{ color: var(--muted); font-size:1rem; }
+
+/* RTL logical margin already supported via margin-inline-end */
+
+/* ===============================
+   Learn
+=============================== */
+.what-learn{ padding:100px 0; background: linear-gradient(135deg, var(--brand-gold), #FFA000); color:#333; }
+.what-learn .section-title{ color:#333; }
+.checklist{ display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:25px; margin-top:60px; }
+.checklist-item{
+  display:flex; align-items:center; background: rgba(255,255,255,.9); padding:25px;
+  border-radius:15px; font-size:1.05rem; font-weight:500; box-shadow:0 5px 15px rgba(0,0,0,.1);
+  transition: transform .3s ease;
+}
+.checklist-item:hover{ transform: translateX(10px); }
+.check-icon{ color:#4CAF50; font-size:1.5rem; margin-inline-end:15px; font-weight:bold; }
+
+/* ===============================
+   Urgency + Countdown
+=============================== */
+.urgency{ background: var(--brand-red); color: var(--brand-gold); padding:60px 0; text-align:center; }
+.urgency h2{ font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight:800; animation: pulse 2s infinite; }
+.countdown-container{ display:flex; justify-content:center; gap:50px; margin-top:20px; flex-wrap: wrap; }
+.countdown-item span{ font-size:2rem; display:block; color:#fff; }
+.countdown-item small{ color:#ffe88a; }
+
+/* ===============================
+   Testimonials Carousel
+=============================== */
+.testimonials{ padding: 80px 0; background:#fff; }
+.testimonial-carousel{
+  display:flex; gap:20px; overflow:hidden; scroll-behavior:smooth; transform: translateZ(0);
+}
+.testimonial{
+  background: var(--surface); padding: 20px; border-radius: 15px; min-width: 100%;
+  box-shadow:0 5px 15px rgba(0,0,0,.05); text-align:center;
+}
+/* Testimonials Carousel — scroll-snap fallback + JS friendly */
+.testimonials{ padding: 80px 0; background:#fff; }
+
+/* force LTR track so items order is predictable; RTL text inside still fine */
+.testimonial-carousel{
+  display: flex;
+  gap: 20px;
+  direction: ltr;
+  overflow-x: auto;            /* was hidden — let users swipe/scroll */
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  padding-bottom: 8px;         /* room for hidden scrollbar */
+}
+.testimonial{
+  background: #F5F5F5;
+  padding: 20px;
+  border-radius: 15px;
+  min-width: 100%;             /* 1 per view */
+  box-shadow: 0 5px 15px rgba(0,0,0,.05);
+  text-align: center;
+  scroll-snap-align: center;
+}
+
+.carousel-controls{
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+.carousel-controls button{
+  padding: 8px 12px;
+  border: none;
+  background: #D32F2F;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 6px;
+}
+.carousel-controls button:hover{ background: #B71C1C; }
+.carousel-controls button:disabled{
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+/* ===============================
+   Signup
+=============================== */
+.signup{ padding: 100px 0; background: var(--surface); }
+.form-container{
+  max-width:600px; margin:0 auto; background:#fff; padding:50px; border-radius:20px; box-shadow:0 15px 40px rgba(0,0,0,.1);
+}
+.form-group{ margin-bottom:25px; }
+.form-group label{ display:block; margin-bottom:8px; font-weight:600; color: var(--text); }
+.form-group input, .form-group textarea, .form-group select{
+  width:100%; padding:15px 20px; border:2px solid #E0E0E0; border-radius:10px; font-size:1rem; transition: border-color .3s ease, box-shadow .3s ease;
+  background:#fff;
+}
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus{
+  outline:none; border-color: var(--brand-red); box-shadow: 0 0 0 3px rgba(211,47,47,.1);
+}
+.submit-button{
+  width:100%; background: var(--brand-red); color:#fff; padding:18px; border:none; border-radius:10px; font-size:1.2rem; font-weight:700; cursor:pointer; transition: all .3s ease; margin-top:20px;
+}
+.submit-button:hover{ background: var(--brand-red-dark); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(211,47,47,.4); }
+.trust-note{ text-align:center; font-size:.9rem; color: var(--muted); margin-top:20px; }
+
+/* ===============================
+   Footer
+=============================== */
+.footer{ background:#333; color:#fff; padding:50px 0; text-align:center; }
+.footer p{ margin-bottom:10px; }
+
+/* ===============================
+   Sticky CTA (mobile)
+=============================== */
+.sticky-cta-mobile{
+  display:none; position:fixed; bottom:10px; left:10px; right:10px; z-index: 1500;
+}
+.sticky-cta-mobile button{
+  width:100%; padding:15px; background: var(--brand-gold); color:#111; font-weight:700; border:none; border-radius:50px;
+}
+
+/* ===============================
+   Animations
+=============================== */
+@keyframes fadeInUp{ from{ opacity:0; transform: translateY(30px);} to{ opacity:1; transform: translateY(0);} }
+@keyframes pulse{ 0%,100%{ transform: scale(1);} 50%{ transform: scale(1.05);} }
+
+@media (prefers-reduced-motion: reduce){
+  * { animation: none !important; transition: none !important; }
+}
+
+/* ===============================
+   Responsive
+=============================== */
+@media (max-width: 768px){
+  .hero{ min-height: 80vh; padding:40px 0; }
+  .benefits-grid, .details-grid, .checklist{ grid-template-columns: 1fr; }
+  .form-container{ margin:0 20px; padding:30px; }
+  .detail-item{ flex-direction: column; text-align:center; }
+  .detail-icon{ margin-inline-end:0; margin-bottom:15px; }
+  .lang-toggle{ left: 50%; right: auto; transform: translateX(-50%); top: 52px; }
+  .sticky-cta-mobile{ display:block; }
+}
+
+/* Keep explicit override for safety on narrow screens */
+.lang-toggle{
+  position: fixed;
+  top: 60px;  /* was 10px — now below the banner */
+  right: 10px;
+  z-index: 2100; /* above content but below overlays */
+}
+
+/* ... (everything from the style.css I sent earlier) ... */
+
+/* ensure carousel isn’t flipped in RTL */
+.testimonial-carousel { direction: ltr; }
+
+/* inline errors (live validation) */
+.error-text{
+  color: #d93025;
+  font-size: 0.85rem;
+  margin-top: 6px;
+  display: block;
+  min-height: 1.1em; /* reserve space to avoid layout shift */
+}
+.form-group.invalid input{
+  border-color:#d93025;
+  box-shadow: 0 0 0 3px rgba(217,48,37,0.12);
+}
+.form-group.valid input{
+  border-color:#28a745;
+  box-shadow: 0 0 0 3px rgba(40,167,69,0.12);
+}
+/* Hide language toggle on scroll */
+.lang-toggle {
+  transition: opacity .25s ease, transform .25s ease;
+}
+.lang-toggle.hide {
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+}
+/* כיוון טקסט נכון בתוך הכרטיסים, בלי קשר ל-LTR של המסילה */
+.testimonial{ unicode-bidi: isolate; }
+html[dir="rtl"] .testimonial{ direction: rtl; }
+html[dir="ltr"] .testimonial{ direction: ltr; }
+
