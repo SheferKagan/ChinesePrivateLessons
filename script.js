@@ -30,7 +30,7 @@ const DICT = {
     sched_h: "Schedule",
     sched_p: "Once a week · 6 weeks total<br>1.5 hours per session",
     size_h: "Class Size",
-    size_p: "Maximum 12 students<br>Intimate learning environment",
+    size_p: "Maximum 8 students<br>Intimate learning environment",
 
     learn_title: "What You'll Learn",
     learn1: "Perfect self-introductions",
@@ -75,7 +75,7 @@ const DICT = {
     msg_email_invalid: "Please enter a valid email address.",
     msg_blocked: "Submission blocked.",
 
-    sale_text: "🔥 Limited Offer — 15% OFF This Month Only! 🔥 🎯 Enroll today — Start speaking Chinese in 6 weeks! 📅 New groups start Sunday!",
+    sale_text: "Sign-up gift for those registering by Aug 20 – 7th session for practice and hands-on experience using the language in real situations",
 
     /* labels for spreadsheet */
     form_field_name: "Name",
@@ -116,7 +116,7 @@ const DICT = {
     sched_h: "זמנים",
     sched_p: "פעם בשבוע · 6 שבועות<br>90 דקות למפגש",
     size_h: "גודל קבוצה",
-    size_p: "עד 12 משתתפים<br>אווירה אינטימית",
+    size_p: "עד 8 משתתפים<br>אווירה אינטימית",
 
     learn_title: "מה נלמד",
     learn1: "הצגה עצמית מושלמת",
@@ -161,7 +161,7 @@ const DICT = {
     msg_email_invalid: "אנא הזינו כתובת אימייל תקינה.",
     msg_blocked: "ההגשה נחסמה.",
 
-    sale_text: "🔥 מבצע מיוחד — 15% הנחה לחודש הקרוב בלבד! 🎯 הירשמו היום — מתחילים לדבר סינית תוך 6 שבועות! 📅 קבוצות חדשות מתחילות ביום ראשון!",
+    sale_text: "מתנת הצטרפות לנרשמים עד 20.8 - מפגש 7 של תירגול והתנסות בשימוש בשפה בסיטואציות אמיתיות",
 
     /* labels for spreadsheet */
     form_field_name: "שם",
@@ -209,8 +209,18 @@ function applyLang(lang) {
   const saleBanner = document.getElementById('saleBanner');
   if (saleBanner && t.sale_text) {
     saleBanner.innerHTML = `<span>${t.sale_text}</span>`;
+
+    const span = saleBanner.querySelector('span');
+    if (lang === 'he') {
+      span.style.transform = 'translateX(-100%)'; // start from right for Hebrew
+      span.style.animationDirection = 'reverse';  // optional: scroll left-to-right
+    } else {
+      span.style.transform = 'translateX(100%)'; // default left-to-right
+      span.style.animationDirection = 'normal';
+    }
   }
 }
+
 
 /***********************************************************
  * Persisted language

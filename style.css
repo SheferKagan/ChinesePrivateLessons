@@ -351,3 +351,7 @@ html { scroll-behavior: smooth; }
 html[dir="rtl"] .testimonial{ direction: rtl; }
 html[dir="ltr"] .testimonial{ direction: ltr; }
 
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
