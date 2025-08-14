@@ -308,14 +308,6 @@ html { scroll-behavior: smooth; }
   .sticky-cta-mobile{ display:block; }
 }
 
-/* Keep explicit override for safety on narrow screens */
-.lang-toggle{
-  position: fixed;
-  top: 60px;  /* was 10px — now below the banner */
-  right: 10px;
-  z-index: 2100; /* above content but below overlays */
-}
-
 /* ... (everything from the style.css I sent earlier) ... */
 
 /* ensure carousel isn’t flipped in RTL */
@@ -355,3 +347,65 @@ html, body {
   max-width: 100%;
   overflow-x: hidden;
 }
+
+/* === FINAL MOBILE SHIFT FIX (append at end) === */
+
+/* 1) .lang-toggle: pick ONE side, clear the other */
+.lang-toggle {
+  position: fixed;
+  z-index: 2100;
+  top: 60px;
+  right: 10px;             /* default: top-right */
+  left: auto !important;   /* clear any earlier left */
+  transform: none !important;
+}
+
+/* Respect RTL: flip to the left without conflicting with right */
+html[dir="rtl"] .lang-toggle {
+  right: auto !important;
+  left: 10px !important;
+}
+
+/* If you really want centered on mobile, use this single rule instead
+@media (max-width: 768px){
+  .lang-toggle{
+    right: 50% !important;
+    left: auto !important;
+    transform: translateX(50%) !important;
+    top: 52px;
+  }
+}
+*/
+
+/* 2) Carousel: ensure one card per view and no track widening */
+.testimonial-carousel{
+  direction: ltr;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  gap: 20px;
+  padding-bottom: 8px;
+}
+.testimonial{
+  flex: 0 0 100%;
+  min-width: 100%;
+  scroll-snap-align: center;
+}
+
+/* 3) Sticky CTA: avoid implicit >100vw widths */
+.sticky-cta-mobile{
+  left: 10px;
+  right: 10px;
+  width: auto;
+  box-sizing: border-box;
+}
+
+/* 4) Sale banner: clamp to viewport */
+.sale-banner{ left: 0; right: 0; overflow: hidden; }
+
+/* 5) Defensive: children can shrink in flex rows */
+.detail-item{ min-width: 0; }
+
+/* 6) Absolute guardrails */
+html, body{ overflow-x: hidden !important; max-width: 100%; }
+img, video, svg, canvas{ max-width: 100%; height: auto; display: block; }
