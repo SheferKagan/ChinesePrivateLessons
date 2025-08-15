@@ -150,7 +150,7 @@ const DICT = {
     privacy: "🔒 ניצור קשר רק לגבי הקורס. בלי ספאם.",
     footer_brand: "סינית למתחילים",
     footer_loc: "פארק ההייטק רעננה",
-    footer_contact: "אימייל: matanovax@gmail.com | טלפון: +972-53-780-0337",
+    footer_contact: "אימייל: matanovax@gmail.com | טלפון: 053-755-5541",
     footer_legal: "© 2025 סינית למתחילים. מדיניות פרטיות | תנאי שימוש",
 
     msg_success: "🎉 הצלחה! המקום שלך נשמר. ניצור קשר בקרוב עם פרטי השיעור.",
